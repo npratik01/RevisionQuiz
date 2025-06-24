@@ -517,7 +517,11 @@ def admin_dashboard():
     # Simple authentication check
     auth = request.authorization
     if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
-        return jsonify({'error': 'Authentication required'}), 401
+        # Return a 401 with WWW-Authenticate header to trigger browser auth
+        response = jsonify({'error': 'Authentication required'})
+        response.status_code = 401
+        response.headers['WWW-Authenticate'] = 'Basic realm="Admin Area"'
+        return response
     
     # Load current data
     current_students = load_students_data()
@@ -553,7 +557,10 @@ def download_csv():
     """Download quiz results as CSV"""
     auth = request.authorization
     if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
-        return jsonify({'error': 'Authentication required'}), 401
+        response = jsonify({'error': 'Authentication required'})
+        response.status_code = 401
+        response.headers['WWW-Authenticate'] = 'Basic realm="Admin Area"'
+        return response
     
     # Load current data
     current_students = load_students_data()
@@ -608,7 +615,10 @@ def download_json():
     """Download quiz results as JSON"""
     auth = request.authorization
     if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
-        return jsonify({'error': 'Authentication required'}), 401
+        response = jsonify({'error': 'Authentication required'})
+        response.status_code = 401
+        response.headers['WWW-Authenticate'] = 'Basic realm="Admin Area"'
+        return response
     
     # Load current data
     current_students = load_students_data()

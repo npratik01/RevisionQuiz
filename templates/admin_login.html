@@ -15,39 +15,804 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Animated background particles */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        animation: float 6s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(1deg); }
+      }
+
+      .main-container {
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #333;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .login-wrapper {
+        width: 100%;
+        max-width: 1200px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .welcome-section {
+        color: white;
+        text-align: left;
+      }
+
+      .welcome-section h1 {
+        font-size: 3.5em;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
+      }
+
+      .welcome-section p {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        opacity: 0.9;
+        line-height: 1.6;
+      }
+
+      .features {
+        margin-top: 30px;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+        opacity: 0.95;
+      }
+
+      .feature-item::before {
+        content: "✓";
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-weight: bold;
+        font-size: 14px;
       }
 
       .container {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        width: 90%;
-        max-width: 400px;
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+        background-size: 200% 100%;
+        animation: gradientShift 3s ease infinite;
+      }
+
+      @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      .form-container {
         padding: 40px;
       }
 
       .header {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
       }
 
-      .header h1 {
-        color: #2c3e50;
-        margin-bottom: 10px;
+      .header .logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 2em;
+        color: white;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .header h2 {
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-size: 1.8em;
+        font-weight: 600;
       }
 
       .header p {
         color: #666;
-        font-size: 1.1em;
+        font-size: 1em;
       }
 
       .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 18px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 16px 16px 16px 50px;
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 16px 24px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .divider {
+        text-align: center;
+        margin: 30px 0;
+        position: relative;
+      }
+
+      .divider::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #e1e5e9;
+      }
+
+      .divider span {
+        background: white;
+        padding: 0 20px;
+        color: #666;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .credentials {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .credentials::before {
+        content: "💡";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: white;
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 16px;
+      }
+
+      .credentials h4 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+
+      .credential-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .credential-value {
+        background: #667eea;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-weight: 600;
+      }
+
+      .quick-access {
+        background: linear-gradient(135deg, #e8f4fd, #cce7ff);
+        border: 1px solid #bee5eb;
+        border-radius: 12px;
+        padding: 20px;
+        position: relative;
+      }
+
+      .quick-access::before {
+        content: "🚀";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: white;
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 16px;
+      }
+
+      .quick-access h4 {
+        color: #0c5460;
+        margin-bottom: 15px;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+
+      .access-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+
+      .access-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .access-links a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .login-wrapper {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          text-align: center;
+        }
+
+        .welcome-section {
+          text-align: center;
+        }
+
+        .welcome-section h1 {
+          font-size: 2.5em;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          padding: 15px;
+        }
+
+        .form-container {
+          padding: 30px 25px;
+        }
+
+        .welcome-section h1 {
+          font-size: 2em;
+        }
+
+        .welcome-section p {
+          font-size: 1.1em;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+
+        .access-links {
+          grid-template-columns: 1fr;
+        }
+
+        .credential-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 5px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .welcome-section h1 {
+          font-size: 1.8em;
+        }
+
+        .form-container {
+          padding: 25px 20px;
+        }
+
+        .header .logo {
+          width: 60px;
+          height: 60px;
+          font-size: 1.5em;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          padding: 14px 14px 14px 45px;
+          font-size: 15px;
+        }
+
+        .btn {
+          padding: 14px 20px;
+          font-size: 15px;
+        }
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        .container {
+          background: #1a1a1a;
+          color: #fff;
+        }
+
+        .header h2 {
+          color: #fff;
+        }
+
+        .header p {
+          color: #ccc;
+        }
+
+        .form-group label {
+          color: #fff;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          background: #2a2a2a;
+          border-color: #444;
+          color: #fff;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+          background: #333;
+        }
+
+        .credentials {
+          background: linear-gradient(135deg, #2a2a2a, #333);
+          border-color: #444;
+        }
+
+        .quick-access {
+          background: linear-gradient(135deg, #1e3a5f, #2c5282);
+          border-color: #4a90a4;
+        }
+      }
+    </style>  </head>
+  <body>
+    <div class="main-container">
+      <div class="login-wrapper">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+          <h1>Welcome Back!</h1>
+          <p>Access your AI Club Quiz administration dashboard to monitor student progress, view results, and manage quiz data.</p>
+          
+          <div class="features">
+            <div class="feature-item">Real-time student monitoring</div>
+            <div class="feature-item">Comprehensive analytics</div>
+            <div class="feature-item">Export & download results</div>
+            <div class="feature-item">Responsive dashboard</div>
+          </div>
+        </div>
+
+        <!-- Login Form -->
+        <div class="container">
+          <div class="form-container">
+            <div class="header">
+              <div class="logo">🔐</div>
+              <h2>Admin Login</h2>
+              <p>AI Club Quiz Management</p>
+            </div>
+
+            <form id="adminForm">
+              <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">👤</span>
+                  <input type="text" id="username" name="username" required placeholder="Enter admin username" />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">🔒</span>
+                  <input type="password" id="password" name="password" required placeholder="Enter admin password" />
+                </div>
+              </div>
+              
+              <button type="submit" class="btn">
+                🚀 Access Dashboard
+              </button>
+              
+              <div class="loading" id="loading">
+                <span class="spinner"></span>
+                Authenticating...
+              </div>
+            </form>
+
+            <div class="divider">
+              <span>Default Credentials</span>
+            </div>
+
+            <div class="credentials">
+              <h4>� Demo Login Details</h4>
+              <div class="credential-item">
+                <span>Username:</span>
+                <span class="credential-value">admin</span>
+              </div>
+              <div class="credential-item">
+                <span>Password:</span>
+                <span class="credential-value">aiclub2024</span>
+              </div>
+            </div>
+
+            <div class="quick-access">
+              <h4>🚀 Quick Access</h4>
+              <div class="access-links">
+                <a href="/admin/dashboard" onclick="setAuth(event, this)">📊 Dashboard</a>
+                <a href="/admin/download/csv" onclick="setAuth(event, this)">📥 CSV Export</a>
+                <a href="/admin/download/json" onclick="setAuth(event, this)">📋 JSON Export</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    <script>
+      // Auto-fill with default credentials for demo
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('username').value = 'admin';
+        document.getElementById('password').value = 'aiclub2024';
+      });
+
+      document.getElementById('adminForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const loadingElement = document.getElementById('loading');
+        const submitButton = e.target.querySelector('.btn');
+        
+        // Show loading state
+        loadingElement.style.display = 'block';
+        submitButton.style.opacity = '0.7';
+        submitButton.style.pointerEvents = 'none';
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Create authorization header and redirect to dashboard
+        const auth = btoa(username + ':' + password);
+        
+        // Try to access dashboard with credentials
+        fetch('/admin/dashboard', {
+          headers: {
+            'Authorization': 'Basic ' + auth
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Store credentials temporarily for this session
+            sessionStorage.setItem('adminAuth', auth);
+            
+            // Success animation before redirect
+            submitButton.innerHTML = '✅ Login Successful!';
+            submitButton.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            
+            setTimeout(() => {
+              window.location.href = '/admin/dashboard';
+            }, 1000);
+          } else {
+            throw new Error('Invalid credentials');
+          }
+        })
+        .catch(error => {
+          // Hide loading and restore button
+          loadingElement.style.display = 'none';
+          submitButton.style.opacity = '1';
+          submitButton.style.pointerEvents = 'auto';
+          submitButton.innerHTML = '❌ Login Failed';
+          submitButton.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+          
+          // Show error animation
+          const container = document.querySelector('.container');
+          container.style.animation = 'shake 0.5s ease-in-out';
+          
+          setTimeout(() => {
+            submitButton.innerHTML = '🚀 Access Dashboard';
+            submitButton.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+            container.style.animation = '';
+          }, 2000);
+          
+          alert('Invalid credentials. Please try again.');
+          console.error('Error:', error);
+        });
+      });
+
+      function setAuth(event, element) {
+        event.preventDefault();
+        const username = document.getElementById('username').value || 'admin';
+        const password = document.getElementById('password').value || 'aiclub2024';
+        const auth = btoa(username + ':' + password);
+        
+        // Add loading state to clicked button
+        const originalText = element.textContent;
+        element.style.opacity = '0.7';
+        element.innerHTML = '⏳ Loading...';
+        
+        // Create a new window/tab with auth header
+        const url = element.href;
+        
+        // For downloads, we need to set the authorization
+        if (url.includes('download')) {
+          fetch(url, {
+            headers: {
+              'Authorization': 'Basic ' + auth
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.blob();
+            } else {
+              throw new Error('Authentication failed');
+            }
+          })
+          .then(blob => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = url.includes('csv') ? 'quiz_results.csv' : 'quiz_results.json';
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+            
+            // Success feedback
+            element.innerHTML = '✅ Downloaded!';
+            element.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            
+            setTimeout(() => {
+              element.innerHTML = originalText;
+              element.style.opacity = '1';
+              element.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            }, 2000);
+          })
+          .catch(error => {
+            element.innerHTML = '❌ Failed';
+            element.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+            
+            setTimeout(() => {
+              element.innerHTML = originalText;
+              element.style.opacity = '1';
+              element.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            }, 2000);
+            
+            alert('Download failed. Please check your credentials.');
+          });
+        } else {
+          // For dashboard, navigate normally
+          sessionStorage.setItem('adminAuth', auth);
+          window.location.href = url;
+        }
+      }
+
+      // Add shake animation for error feedback
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-10px); }
+          75% { transform: translateX(10px); }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Alt + D for dashboard
+        if (e.altKey && e.key === 'd') {
+          e.preventDefault();
+          document.querySelector('a[href="/admin/dashboard"]').click();
+        }
+        // Alt + C for CSV download
+        if (e.altKey && e.key === 'c') {
+          e.preventDefault();
+          document.querySelector('a[href="/admin/download/csv"]').click();
+        }
+        // Alt + J for JSON download
+        if (e.altKey && e.key === 'j') {
+          e.preventDefault();
+          document.querySelector('a[href="/admin/download/json"]').click();
+        }
+      });
+
+      // Add floating particles effect
+      function createParticle() {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: rgba(255, 255, 255, 0.6);
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float-particle 8s linear infinite;
+        `;
+        
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+          particle.remove();
+        }, 8000);
+      }
+
+      // Create particles periodically
+      setInterval(createParticle, 2000);
+
+      // Add particle animation
+      const particleStyle = document.createElement('style');
+      particleStyle.textContent = `
+        @keyframes float-particle {
+          0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(particleStyle);
+    </script>
+  </body>
+</html>
         margin-bottom: 20px;
       }
 
