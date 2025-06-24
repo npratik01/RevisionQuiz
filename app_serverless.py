@@ -390,7 +390,7 @@ QUIZ_QUESTIONS = {
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index_simple.html')
 
 @app.route('/register', methods=['POST'])
 def register_student():

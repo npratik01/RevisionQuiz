@@ -541,5 +541,164 @@
     "total_score": 0,
     "registration_time": "2025-06-24T20:38:25.955483",
     "responses": {}
+  },
+  "d3c9af1f-530b-4e88-b5b5-2e8fedb8bbf2": {
+    "id": "d3c9af1f-530b-4e88-b5b5-2e8fedb8bbf2",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:43:30.924284",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      }
+    },
+    "final_submission_time": "2025-06-24T20:43:37.554296",
+    "time_taken_seconds": 6,
+    "auto_submitted": false
+  },
+  "40e5f897-f347-4d7c-9575-ef35d6a76c8e": {
+    "id": "40e5f897-f347-4d7c-9575-ef35d6a76c8e",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 8,
+    "registration_time": "2025-06-24T20:44:04.044348",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "mathematics"
+      },
+      "3": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "mathematics"
+      },
+      "4": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "5": {
+        "selected_option": 1,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "6": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "7": {
+        "selected_option": 2,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "9": {
+        "selected_option": 2,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "10": {
+        "selected_option": 3,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "11": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "python"
+      },
+      "12": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "13": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "14": {
+        "selected_option": 3,
+        "is_correct": false,
+        "section": "python"
+      },
+      "16": {
+        "selected_option": 3,
+        "is_correct": false,
+        "section": "python"
+      },
+      "17": {
+        "selected_option": 2,
+        "is_correct": false,
+        "section": "python"
+      },
+      "18": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "19": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "20": {
+        "selected_option": 2,
+        "is_correct": false,
+        "section": "python"
+      },
+      "21": {
+        "selected_option": 1,
+        "is_correct": false,
+        "section": "python"
+      },
+      "22": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "23": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "24": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "25": {
+        "selected_option": 2,
+        "is_correct": false,
+        "section": "python"
+      },
+      "26": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "27": {
+        "selected_option": 3,
+        "is_correct": false,
+        "section": "python_libraries"
+      },
+      "29": {
+        "selected_option": 3,
+        "is_correct": false,
+        "section": "python_libraries"
+      }
+    },
+    "final_submission_time": "2025-06-24T20:44:49.673185",
+    "time_taken_seconds": 45,
+    "auto_submitted": false
   }
 }
