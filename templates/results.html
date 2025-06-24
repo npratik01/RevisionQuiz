@@ -264,7 +264,8 @@
             <div class="info-row">
               <span><strong>PRN:</strong></span>
               <span id="studentPRN">-</span>
-            </div>            <div class="info-row">
+            </div>
+            <div class="info-row">
               <span><strong>Date:</strong></span>
               <span id="submissionDate">-</span>
             </div>
@@ -328,20 +329,26 @@
         ).textContent = `${results.total_score}/100`;
         document.getElementById(
           "percentageDisplay"
-        ).textContent = `${results.percentage.toFixed(1)}%`;        document.getElementById("studentName").textContent =
+        ).textContent = `${results.percentage.toFixed(1)}%`;
+        document.getElementById("studentName").textContent =
           results.student_name;
         document.getElementById("studentPRN").textContent = results.prn;
         document.getElementById("submissionDate").textContent =
           new Date().toLocaleDateString();
-        
+
         // Display time taken
         const timeTaken = results.time_taken_minutes || 0;
-        document.getElementById("timeTaken").textContent = `${timeTaken} minutes`;
-        
+        document.getElementById(
+          "timeTaken"
+        ).textContent = `${timeTaken} minutes`;
+
         // Display submission type
-        const submissionType = results.auto_submitted ? "Auto-submitted (Time expired)" : "Manual submission";
+        const submissionType = results.auto_submitted
+          ? "Auto-submitted (Time expired)"
+          : "Manual submission";
         document.getElementById("submissionType").textContent = submissionType;
-        document.getElementById("submissionType").style.color = results.auto_submitted ? "#e74c3c" : "#27ae60";
+        document.getElementById("submissionType").style.color =
+          results.auto_submitted ? "#e74c3c" : "#27ae60";
 
         // Calculate section-wise scores (this would need to be enhanced with actual section data from backend)
         // For now, we'll distribute the score proportionally

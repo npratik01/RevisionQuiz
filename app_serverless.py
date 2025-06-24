@@ -1,16 +1,67 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 import json
 from datetime import datetime
 import os
 import uuid
 import time
+import csv
+import io
+from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
 
-# In-memory storage for serverless compatibility
-students_data = {}
-quiz_responses = {}
+# Create data directory if it doesn't exist
+DATA_DIR = Path('quiz_data')
+DATA_DIR.mkdir(exist_ok=True)
+
+# File paths for persistent storage
+STUDENTS_FILE = DATA_DIR / 'students.json'
+RESPONSES_FILE = DATA_DIR / 'responses.json'
+
+# Admin credentials (you can change these)
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'aiclub2024')
+
+def load_students_data():
+    """Load students data from JSON file"""
+    try:
+        if STUDENTS_FILE.exists():
+            with open(STUDENTS_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading students data: {e}")
+    return {}
+
+def save_students_data(data):
+    """Save students data to JSON file"""
+    try:
+        with open(STUDENTS_FILE, 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"Error saving students data: {e}")
+
+def load_responses_data():
+    """Load responses data from JSON file"""
+    try:
+        if RESPONSES_FILE.exists():
+            with open(RESPONSES_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading responses data: {e}")
+    return {}
+
+def save_responses_data(data):
+    """Save responses data to JSON file"""
+    try:
+        with open(RESPONSES_FILE, 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"Error saving responses data: {e}")
+
+# Load existing data
+students_data = load_students_data()
+quiz_responses = load_responses_data()
 
 # Anti-cheating measures: Track submission times
 submission_times = {}
@@ -355,8 +406,7 @@ def register_student():
             return jsonify({'error': 'Name and PRN are required'}), 400
         
         # Generate unique student ID
-        student_id = str(uuid.uuid4())
-          # Store student data in memory
+        student_id = str(uuid.uuid4())        # Store student data persistently
         students_data[student_id] = {
             'id': student_id,
             'name': name,
@@ -365,6 +415,9 @@ def register_student():
             'registration_time': datetime.now().isoformat(),
             'responses': {}
         }
+        
+        # Save to file
+        save_students_data(students_data)
         
         # Track timing for anti-cheating
         submission_times[student_id] = time.time()
@@ -439,12 +492,14 @@ def submit_quiz():
                         'is_correct': is_correct,
                         'section': section
                     }
-        
-        # Update student's final submission data
+          # Update student's final submission data
         student['total_score'] = total_score
         student['final_submission_time'] = datetime.now().isoformat()
         student['time_taken_seconds'] = time_taken
         student['auto_submitted'] = auto_submit
+        
+        # Save updated student data persistently
+        save_students_data(students_data)
         
         # Calculate time taken in minutes for display
         time_minutes = round(time_taken / 60, 1)
@@ -466,6 +521,130 @@ def submit_quiz():
 @app.route('/results')
 def results():
     return render_template('results.html')
+
+# Admin routes for viewing and downloading quiz results
+@app.route('/admin')
+def admin_login():
+    """Admin login page"""
+    return render_template('admin_login.html')
+
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    """Admin dashboard to view quiz results"""
+    # Simple authentication check
+    auth = request.authorization
+    if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Load current data
+    current_students = load_students_data()
+    
+    # Prepare summary statistics
+    total_students = len(current_students)
+    completed_students = len([s for s in current_students.values() if s.get('final_submission_time')])
+    average_score = 0
+    if completed_students > 0:
+        total_scores = sum(s.get('total_score', 0) for s in current_students.values() if s.get('final_submission_time'))
+        average_score = round(total_scores / completed_students, 2)
+    
+    stats = {
+        'total_students': total_students,
+        'completed_students': completed_students,
+        'average_score': average_score,
+        'last_updated': datetime.now().isoformat()
+    }
+    
+    return render_template('admin_dashboard.html', students=current_students, stats=stats)
+
+@app.route('/admin/api/students')
+def admin_api_students():
+    """API endpoint to get students data (with authentication)"""
+    auth = request.authorization
+    if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    return jsonify(load_students_data())
+
+@app.route('/admin/download/csv')
+def download_csv():
+    """Download quiz results as CSV"""
+    auth = request.authorization
+    if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Load current data
+    current_students = load_students_data()
+    
+    # Create CSV content
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow([
+        'Student ID', 'Name', 'PRN', 'Total Score', 'Percentage', 
+        'Registration Time', 'Submission Time', 'Time Taken (minutes)', 
+        'Auto Submitted', 'Status'
+    ])
+    
+    # Write student data
+    for student in current_students.values():
+        time_taken_minutes = ''
+        if student.get('time_taken_seconds'):
+            time_taken_minutes = round(student['time_taken_seconds'] / 60, 1)
+        
+        status = 'Completed' if student.get('final_submission_time') else 'Registered'
+        percentage = round((student.get('total_score', 0) / 100) * 100, 1)
+        
+        writer.writerow([
+            student.get('id', ''),
+            student.get('name', ''),
+            student.get('prn', ''),
+            student.get('total_score', 0),
+            f"{percentage}%",
+            student.get('registration_time', ''),
+            student.get('final_submission_time', ''),
+            time_taken_minutes,
+            'Yes' if student.get('auto_submitted') else 'No',
+            status
+        ])
+    
+    output.seek(0)
+    
+    # Create response with CSV file
+    response = send_file(
+        io.BytesIO(output.getvalue().encode('utf-8')),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'quiz_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+    )
+    
+    return response
+
+@app.route('/admin/download/json')
+def download_json():
+    """Download quiz results as JSON"""
+    auth = request.authorization
+    if not auth or auth.username != ADMIN_USERNAME or auth.password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Load current data
+    current_students = load_students_data()
+    
+    # Create JSON response
+    response_data = {
+        'export_time': datetime.now().isoformat(),
+        'total_students': len(current_students),
+        'students': current_students
+    }
+    
+    response = send_file(
+        io.BytesIO(json.dumps(response_data, indent=2).encode('utf-8')),
+        mimetype='application/json',
+        as_attachment=True,
+        download_name=f'quiz_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+    )
+    
+    return response
 
 # Health check for serverless platforms
 @app.route('/health')
