@@ -1,0 +1,545 @@
+{
+  "efc2fb5d-970f-4a0a-9479-5865eb39d30a": {
+    "id": "efc2fb5d-970f-4a0a-9479-5865eb39d30a",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:48:17.308759",
+    "responses": {}
+  },
+  "da0681f8-4a54-4457-850a-3798f964f242": {
+    "id": "da0681f8-4a54-4457-850a-3798f964f242",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:49:27.429291",
+    "responses": {}
+  },
+  "0cd75f57-55aa-44c5-bbd2-456bbae54d72": {
+    "id": "0cd75f57-55aa-44c5-bbd2-456bbae54d72",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:52:24.494732",
+    "responses": {}
+  },
+  "7ccccc2c-1d06-48e0-bc3f-0a49180ebe33": {
+    "id": "7ccccc2c-1d06-48e0-bc3f-0a49180ebe33",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:55:10.637344",
+    "responses": {}
+  },
+  "ba62c45a-3d2d-453b-870c-a92becfc5708": {
+    "id": "ba62c45a-3d2d-453b-870c-a92becfc5708",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:55:12.669723",
+    "responses": {}
+  },
+  "066dee65-98f2-4626-8d03-3e97f80c3d36": {
+    "id": "066dee65-98f2-4626-8d03-3e97f80c3d36",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:56:17.017966",
+    "responses": {}
+  },
+  "e1598c82-21c9-41ce-9e6f-2c512bb81ba6": {
+    "id": "e1598c82-21c9-41ce-9e6f-2c512bb81ba6",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:56:19.048332",
+    "responses": {}
+  },
+  "3b0ddee9-8db7-4e22-bc63-c280142307ea": {
+    "id": "3b0ddee9-8db7-4e22-bc63-c280142307ea",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:57:19.904321",
+    "responses": {}
+  },
+  "ccbdd8bc-c3e3-4a68-b9c7-4c55561bb420": {
+    "id": "ccbdd8bc-c3e3-4a68-b9c7-4c55561bb420",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:57:21.935714",
+    "responses": {}
+  },
+  "b3f15b4d-0afa-46b7-81f9-dbcac85b49f4": {
+    "id": "b3f15b4d-0afa-46b7-81f9-dbcac85b49f4",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:59:08.171520",
+    "responses": {}
+  },
+  "653e4972-faeb-4e97-8f83-3186825a9fa4": {
+    "id": "653e4972-faeb-4e97-8f83-3186825a9fa4",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T18:59:10.198342",
+    "responses": {}
+  },
+  "f951d26a-55ec-4619-9a99-bf6891f4d795": {
+    "id": "f951d26a-55ec-4619-9a99-bf6891f4d795",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T19:50:08.063497",
+    "responses": {}
+  },
+  "24dd2479-9a45-40b6-9bee-6eb63d7c9308": {
+    "id": "24dd2479-9a45-40b6-9bee-6eb63d7c9308",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T19:50:16.524653",
+    "responses": {}
+  },
+  "f5da6ff0-4853-469f-9b71-002ebacfd901": {
+    "id": "f5da6ff0-4853-469f-9b71-002ebacfd901",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 0,
+    "registration_time": "2025-06-24T19:50:18.613390",
+    "responses": {}
+  },
+  "6b0655a5-ca0b-49d8-a68b-9b4ed4418de5": {
+    "id": "6b0655a5-ca0b-49d8-a68b-9b4ed4418de5",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T19:54:08.204966",
+    "responses": {}
+  },
+  "542e6054-f490-4fe1-b953-2bfd52368ee1": {
+    "id": "542e6054-f490-4fe1-b953-2bfd52368ee1",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 8,
+    "registration_time": "2025-06-24T19:56:26.947075",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "3": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "4": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "5": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "11": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "12": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "13": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "14": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "15": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "26": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python_libraries"
+      },
+      "27": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "28": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "29": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "30": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      }
+    },
+    "final_submission_time": "2025-06-24T19:56:29.029477",
+    "time_taken_seconds": 120,
+    "auto_submitted": false
+  },
+  "b166b0b4-179c-42fa-a5c3-30342d332f38": {
+    "id": "b166b0b4-179c-42fa-a5c3-30342d332f38",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 2,
+    "registration_time": "2025-06-24T19:56:29.039084",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "mathematics"
+      }
+    },
+    "final_submission_time": "2025-06-24T19:56:29.048939",
+    "time_taken_seconds": 5,
+    "auto_submitted": false
+  },
+  "d0441e5a-2cd2-4c1a-bdba-97a8ab365d03": {
+    "id": "d0441e5a-2cd2-4c1a-bdba-97a8ab365d03",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 8,
+    "registration_time": "2025-06-24T19:58:01.569188",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "3": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "4": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "5": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "11": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "12": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "13": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "14": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "15": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "26": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python_libraries"
+      },
+      "27": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "28": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "29": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "30": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      }
+    },
+    "final_submission_time": "2025-06-24T19:58:03.588677",
+    "time_taken_seconds": 120,
+    "auto_submitted": false
+  },
+  "4cf7bb38-702d-45d3-ac6f-598bffc042ef": {
+    "id": "4cf7bb38-702d-45d3-ac6f-598bffc042ef",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 2,
+    "registration_time": "2025-06-24T19:58:03.599453",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "mathematics"
+      }
+    },
+    "final_submission_time": "2025-06-24T19:58:03.611611",
+    "time_taken_seconds": 5,
+    "auto_submitted": false
+  },
+  "f6a9c622-02f8-4427-88f1-05ed68f6ee7d": {
+    "id": "f6a9c622-02f8-4427-88f1-05ed68f6ee7d",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T19:58:55.534790",
+    "responses": {}
+  },
+  "62ac557e-3e6f-4fd1-8916-99b5cfcd184e": {
+    "id": "62ac557e-3e6f-4fd1-8916-99b5cfcd184e",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:01:27.192452",
+    "responses": {}
+  },
+  "2266f6a9-bf50-476a-b170-0294506949cd": {
+    "id": "2266f6a9-bf50-476a-b170-0294506949cd",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:05:06.417241",
+    "responses": {}
+  },
+  "234f097c-605d-4b6c-9cc0-1a9211859637": {
+    "id": "234f097c-605d-4b6c-9cc0-1a9211859637",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:11:55.221112",
+    "responses": {}
+  },
+  "39e7884c-7895-4ec4-98d7-18932199f8a8": {
+    "id": "39e7884c-7895-4ec4-98d7-18932199f8a8",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:20:07.496183",
+    "responses": {}
+  },
+  "49bedddb-f9e6-406c-8246-af4d8c85e98b": {
+    "id": "49bedddb-f9e6-406c-8246-af4d8c85e98b",
+    "name": "Jaggu Bai",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:21:06.008288",
+    "responses": {}
+  },
+  "8c52aab0-e858-44ad-a7b0-5968ac43e1bf": {
+    "id": "8c52aab0-e858-44ad-a7b0-5968ac43e1bf",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:27:11.526671",
+    "responses": {}
+  },
+  "748dff4d-b31d-4374-8791-f980e4a7e3eb": {
+    "id": "748dff4d-b31d-4374-8791-f980e4a7e3eb",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:28:23.581133",
+    "responses": {}
+  },
+  "8f957308-dd39-450d-b0e8-b5b4330768a8": {
+    "id": "8f957308-dd39-450d-b0e8-b5b4330768a8",
+    "name": "Test Student",
+    "prn": "TEST123",
+    "total_score": 8,
+    "registration_time": "2025-06-24T20:32:35.847556",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "3": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "4": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "5": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "11": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "12": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "13": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "14": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "15": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python"
+      },
+      "26": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "python_libraries"
+      },
+      "27": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "28": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "29": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      },
+      "30": {
+        "selected_option": 0,
+        "is_correct": true,
+        "section": "python_libraries"
+      }
+    },
+    "final_submission_time": "2025-06-24T20:32:37.869388",
+    "time_taken_seconds": 120,
+    "auto_submitted": false
+  },
+  "483af7fd-f3f7-4c08-a5bb-946d7f1ef4c9": {
+    "id": "483af7fd-f3f7-4c08-a5bb-946d7f1ef4c9",
+    "name": "Quick Test Student",
+    "prn": "QUICK123",
+    "total_score": 2,
+    "registration_time": "2025-06-24T20:32:37.878319",
+    "responses": {
+      "1": {
+        "selected_option": 0,
+        "is_correct": false,
+        "section": "mathematics"
+      },
+      "2": {
+        "selected_option": 1,
+        "is_correct": true,
+        "section": "mathematics"
+      }
+    },
+    "final_submission_time": "2025-06-24T20:32:37.887214",
+    "time_taken_seconds": 5,
+    "auto_submitted": false
+  },
+  "4a6bf247-47c1-45f3-ab55-1ccb417e3713": {
+    "id": "4a6bf247-47c1-45f3-ab55-1ccb417e3713",
+    "name": "Jaggu Bai",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:33:08.368369",
+    "responses": {}
+  },
+  "ef4ef801-7464-43ff-bc57-15777fc519f0": {
+    "id": "ef4ef801-7464-43ff-bc57-15777fc519f0",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:34:02.196657",
+    "responses": {}
+  },
+  "36b34d6e-9045-4432-8662-e4f8e5fdeb67": {
+    "id": "36b34d6e-9045-4432-8662-e4f8e5fdeb67",
+    "name": "Pratik Vijay Nikam",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:37:42.830755",
+    "responses": {}
+  },
+  "e3711503-ecf5-4c19-b291-cefafb736756": {
+    "id": "e3711503-ecf5-4c19-b291-cefafb736756",
+    "name": "Jaggu Bai",
+    "prn": "143",
+    "total_score": 0,
+    "registration_time": "2025-06-24T20:38:25.955483",
+    "responses": {}
+  }
+}

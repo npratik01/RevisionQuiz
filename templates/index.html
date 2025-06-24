@@ -303,91 +303,6 @@
         width: 0%;
         transition: width 0.3s;
       }
-
-      /* Timer styles */
-      .timer-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #2c3e50;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        font-weight: bold;
-        font-size: 18px;
-        min-width: 200px;
-        text-align: center;
-      }
-
-      .timer-container.warning {
-        background: #e74c3c;
-        animation: pulse 2s infinite;
-      }
-
-      .timer-container.critical {
-        background: #c0392b;
-        animation: pulse 1s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.7;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
-      .timer-label {
-        font-size: 14px;
-        opacity: 0.9;
-        margin-bottom: 5px;
-      }
-
-      .timer-display {
-        font-size: 24px;
-        font-weight: bold;
-      }
-
-      /* Auto-submit warning overlay */
-      .auto-submit-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 10000;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-align: center;
-        font-size: 24px;
-      }
-
-      .auto-submit-content {
-        background: #e74c3c;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-      }
-
-      .auto-submit-content h2 {
-        margin-bottom: 20px;
-        font-size: 32px;
-      }
-
-      .countdown-display {
-        font-size: 48px;
-        font-weight: bold;
-        margin: 20px 0;
-      }
       .quiz-info {
         background: #f8f9fa;
         border: 1px solid #dee2e6;
@@ -552,150 +467,23 @@
         </div>
       </div>
     </div>
-
-    <!-- Timer Display -->
-    <div id="timerContainer" class="timer-container" style="display: none">
-      <div class="timer-label">Time Remaining</div>
-      <div class="timer-display" id="timerDisplay">30:00</div>
-    </div>
-
-    <!-- Auto-submit Overlay -->
-    <div id="autoSubmitOverlay" class="auto-submit-overlay">
-      <div class="auto-submit-content">
-        <h2>⏰ Time's Up!</h2>
-        <p>Your quiz is being automatically submitted...</p>
-        <div class="countdown-display" id="autoSubmitCountdown">5</div>
-        <p>Submitting in <span id="submitCountdown">5</span> seconds</p>
-      </div>
-    </div>
+    <!-- Quiz content continues here -->
     <script>
       let questions = {};
       let userResponses = {};
       let currentStudent = null;
-      let studentId = null;
-
-      // Timer variables
-      let quizTimer = null;
-      let timeRemaining = 30 * 60; // 30 minutes in seconds
+      let studentId = null; // Timer variables (optional time tracking for records only)
       let quizStartTime = null;
       let isQuizSubmitted = false;
 
-      // Timer functions
+      // Start time tracking (no countdown timer)
       function startQuizTimer() {
         quizStartTime = Date.now();
-        document.getElementById("timerContainer").style.display = "block";
-
-        quizTimer = setInterval(function () {
-          if (isQuizSubmitted) {
-            clearInterval(quizTimer);
-            return;
-          }
-
-          timeRemaining--;
-          updateTimerDisplay();
-
-          // Check for warnings
-          if (timeRemaining <= 300 && timeRemaining > 60) {
-            // Last 5 minutes
-            document.getElementById("timerContainer").className =
-              "timer-container warning";
-          } else if (timeRemaining <= 60) {
-            // Last minute
-            document.getElementById("timerContainer").className =
-              "timer-container critical";
-          }
-
-          // Auto-submit when time runs out
-          if (timeRemaining <= 0) {
-            clearInterval(quizTimer);
-            autoSubmitQuiz();
-          }
-        }, 1000);
-      }
-
-      function updateTimerDisplay() {
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-        const display = `${minutes.toString().padStart(2, "0")}:${seconds
-          .toString()
-          .padStart(2, "0")}`;
-        document.getElementById("timerDisplay").textContent = display;
-      }
-
-      function autoSubmitQuiz() {
-        if (isQuizSubmitted) return;
-
-        // Show auto-submit overlay
-        document.getElementById("autoSubmitOverlay").style.display = "flex";
-
-        let countdown = 5;
-        document.getElementById("autoSubmitCountdown").textContent = countdown;
-        document.getElementById("submitCountdown").textContent = countdown;
-
-        const countdownTimer = setInterval(function () {
-          countdown--;
-          if (countdown > 0) {
-            document.getElementById("autoSubmitCountdown").textContent =
-              countdown;
-            document.getElementById("submitCountdown").textContent = countdown;
-          } else {
-            clearInterval(countdownTimer);
-            submitQuizAutomatically();
-          }
-        }, 1000);
-      }
-
-      async function submitQuizAutomatically() {
-        if (isQuizSubmitted) return;
-
-        isQuizSubmitted = true;
-
-        try {
-          const response = await fetch("/submit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              responses: userResponses,
-              student_id: studentId,
-              auto_submit: true,
-              time_taken: Math.floor((Date.now() - quizStartTime) / 1000),
-            }),
-          });
-
-          const result = await response.json();
-
-          if (result.success) {
-            sessionStorage.setItem("quizResults", JSON.stringify(result));
-            window.location.href = "/results";
-          } else {
-            alert("Auto-submission failed: " + result.error);
-            // Retry submission
-            setTimeout(() => {
-              if (!isQuizSubmitted) {
-                submitQuizAutomatically();
-              }
-            }, 2000);
-          }
-        } catch (error) {
-          console.error("Auto-submission error:", error);
-          // Retry submission
-          setTimeout(() => {
-            if (!isQuizSubmitted) {
-              submitQuizAutomatically();
-            }
-          }, 2000);
-        }
-      }
-
-      // Stop timer when quiz is manually submitted
-      function stopTimer() {
-        if (quizTimer) {
-          clearInterval(quizTimer);
-          quizTimer = null;
-        }
-        document.getElementById("timerContainer").style.display = "none";
+        // Timer display is disabled - no time restrictions
+      } // Time tracking functions (for record keeping only)
+      function getTimeElapsed() {
+        if (!quizStartTime) return 0;
+        return Math.floor((Date.now() - quizStartTime) / 1000);
       }
 
       // Registration form handling
@@ -732,8 +520,7 @@
                 "none";
               document.getElementById("quizContainer").style.display = "block";
               document.getElementById("loading").classList.remove("hidden");
-              await loadQuestions();
-              // Start the 30-minute timer
+              await loadQuestions(); // Start time tracking (no timer restrictions)
               startQuizTimer();
             } else {
               alert("Registration failed: " + result.error);
@@ -861,12 +648,13 @@
         const progressPercent = (answeredQuestions / totalQuestions) * 100;
         document.getElementById("progressFill").style.width =
           progressPercent + "%";
-      }
-
-      // Submit quiz
+      } // Submit quiz
       document
         .getElementById("submitQuiz")
-        .addEventListener("click", async () => {
+        .addEventListener("click", async (event) => {
+          console.log("--- SUBMIT BUTTON CLICKED ---");
+          console.log("Event:", event);
+
           const answeredQuestions = Object.keys(userResponses).length;
           const totalQuestions = 50;
 
@@ -889,34 +677,67 @@
             return;
           }
           try {
-            // Stop the timer when manually submitting
-            stopTimer();
             isQuizSubmitted = true;
 
             document.getElementById("submitQuiz").disabled = true;
             document.getElementById("submitQuiz").textContent = "Submitting...";
+            console.log("--- DEBUG: PREPARING SUBMISSION ---");
+            console.log("Student ID:", studentId);
+            console.log(
+              "User Responses:",
+              JSON.stringify(userResponses, null, 2)
+            );
+            console.log("Time Elapsed (s):", getTimeElapsed());
 
-            const response = await fetch("/submit", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                responses: userResponses,
-                student_id: studentId,
-                auto_submit: false,
-                time_taken: Math.floor((Date.now() - quizStartTime) / 1000),
-              }),
-            });
+            // Additional debugging
+            console.log("--- SUBMISSION VALIDATION ---");
+            console.log("studentId exists:", !!studentId);
+            console.log("userResponses object:", userResponses);
+            console.log(
+              "Number of responses:",
+              Object.keys(userResponses).length
+            );
 
-            const result = await response.json();
+            try {
+              console.log("--- MAKING FETCH REQUEST ---");
+              const response = await fetch("/submit", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  responses: userResponses,
+                  student_id: studentId,
+                  auto_submit: false,
+                  time_taken: getTimeElapsed(),
+                }),
+              });
 
-            if (result.success) {
-              // Store results and redirect
-              sessionStorage.setItem("quizResults", JSON.stringify(result));
-              window.location.href = "/results";
-            } else {
-              alert("Submission failed: " + result.error);
+              console.log("--- FETCH RESPONSE ---");
+              console.log("Response status:", response.status);
+              console.log("Response ok:", response.ok);
+
+              const result = await response.json();
+              console.log("--- RESPONSE DATA ---");
+              console.log("Result:", result);
+
+              if (result.success) {
+                // Store results and redirect
+                sessionStorage.setItem("quizResults", JSON.stringify(result));
+                window.location.href = "/results";
+              } else {
+                console.log("--- SUBMISSION FAILED ---");
+                console.log("Error from server:", result.error);
+                alert("Submission failed: " + result.error);
+                document.getElementById("submitQuiz").disabled = false;
+                document.getElementById("submitQuiz").textContent =
+                  "Submit Quiz";
+              }
+            } catch (error) {
+              console.log("--- FETCH ERROR ---");
+              console.log("Error details:", error);
+              alert("Submission failed. Please try again.");
+              console.error("Error:", error);
               document.getElementById("submitQuiz").disabled = false;
               document.getElementById("submitQuiz").textContent = "Submit Quiz";
             }
@@ -1024,16 +845,14 @@
           showSecurityWarning("Inspect element is disabled during the quiz.");
           return false;
         }
-      });
+      }); // Prevent text selection with mouse (TEMPORARILY DISABLED FOR DEBUGGING)
+      // document.onselectstart = function () {
+      //   return false;
+      // };
 
-      // Prevent text selection with mouse
-      document.onselectstart = function () {
-        return false;
-      };
-
-      document.onmousedown = function () {
-        return false;
-      };
+      // document.onmousedown = function () {
+      //   return false;
+      // };
 
       // Blur content when window loses focus (Alt+Tab protection)
       let isBlurred = false;

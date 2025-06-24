@@ -63,9 +63,6 @@ def save_responses_data(data):
 students_data = load_students_data()
 quiz_responses = load_responses_data()
 
-# Anti-cheating measures: Track submission times
-submission_times = {}
-
 # Security headers middleware
 @app.after_request
 def after_request(response):
@@ -415,12 +412,8 @@ def register_student():
             'registration_time': datetime.now().isoformat(),
             'responses': {}
         }
-        
-        # Save to file
+          # Save to file
         save_students_data(students_data)
-        
-        # Track timing for anti-cheating
-        submission_times[student_id] = time.time()
         
         return jsonify({
             'success': True, 
@@ -444,29 +437,19 @@ def submit_quiz():
         student_id = data.get('student_id')
         responses = data.get('responses', {})
         auto_submit = data.get('auto_submit', False)
-        time_taken = data.get('time_taken', 0)
+        time_taken = data.get('time_taken', 0)  # Optional timing data for records
         
         if not student_id or student_id not in students_data:
             return jsonify({'error': 'Invalid student session'}), 400
         
         student = students_data[student_id]
-        
-        # Anti-cheating: Check if already submitted
+        # Check if already submitted
         if 'final_submission_time' in student:
             return jsonify({'error': 'Quiz already submitted'}), 400
+          # Log submission details
+        print(f"Submission received - Time taken: {time_taken} seconds, Auto-submit: {auto_submit}")
         
-        # Anti-cheating: Validate submission timing (minimum time check for manual submissions)
-        current_time = time.time()
-        if student_id in submission_times and not auto_submit:
-            time_diff = current_time - submission_times[student_id]
-            if time_diff < 300:  # Minimum 5 minutes to complete quiz
-                return jsonify({'error': 'Suspicious submission timing detected'}), 400
-        
-        # Anti-cheating: Validate time limit (30 minutes = 1800 seconds)
-        if time_taken > 1800:
-            return jsonify({'error': 'Time limit exceeded'}), 400
-        
-        # Anti-cheating: Validate response format
+        # Validate response format
         for question_id, response in responses.items():
             if not isinstance(response, int) or response < 0 or response > 3:
                 return jsonify({'error': 'Invalid response format detected'}), 400
@@ -485,14 +468,14 @@ def submit_quiz():
                     
                     if is_correct:
                         total_score += 2  # Each question carries 2 marks
-                    
-                    # Store response
+                      # Store response
                     student['responses'][question_id] = {
                         'selected_option': selected_option,
                         'is_correct': is_correct,
                         'section': section
                     }
-          # Update student's final submission data
+        
+        # Update student's final submission data
         student['total_score'] = total_score
         student['final_submission_time'] = datetime.now().isoformat()
         student['time_taken_seconds'] = time_taken
