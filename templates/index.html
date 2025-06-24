@@ -360,12 +360,11 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <script>
+    </div>    <script>
       let questions = {};
       let userResponses = {};
       let currentStudent = null;
+      let studentId = null;
 
       // Registration form handling
       document
@@ -397,6 +396,7 @@
 
             if (result.success) {
               currentStudent = data;
+              studentId = result.student_id; // Store the UUID from serverless backend
               document.getElementById("registrationForm").style.display =
                 "none";
               document.getElementById("quizContainer").style.display = "block";
@@ -554,9 +554,7 @@
             )
           ) {
             return;
-          }
-
-          try {
+          }          try {
             document.getElementById("submitQuiz").disabled = true;
             document.getElementById("submitQuiz").textContent = "Submitting...";
 
@@ -565,7 +563,10 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ responses: userResponses }),
+              body: JSON.stringify({ 
+                responses: userResponses,
+                student_id: studentId // Include student ID for serverless backend
+              }),
             });
 
             const result = await response.json();
