@@ -79,12 +79,12 @@
         font-size: 16px;
         transition: border-color 0.3s;
       }
-      
+
       input[type="text"]:focus {
         outline: none;
         border-color: #3498db;
       }
-      
+
       .btn {
         background: #3498db;
         color: white;
@@ -106,7 +106,7 @@
         opacity: 0.6;
         cursor: not-allowed;
       }
-      
+
       .section-header {
         background: #ecf0f1;
         padding: 20px;
@@ -124,7 +124,7 @@
         color: #666;
         font-size: 14px;
       }
-      
+
       .question {
         background: #ffffff;
         padding: 25px;
@@ -133,7 +133,7 @@
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-      
+
       .question h4 {
         color: #333;
         margin-bottom: 15px;
@@ -158,7 +158,7 @@
         display: grid;
         gap: 10px;
       }
-      
+
       .option {
         background: #f8f9fa;
         border: 2px solid #dee2e6;
@@ -180,7 +180,7 @@
         background: #3498db;
         color: white;
       }
-      
+
       .option input[type="radio"] {
         margin-right: 10px;
       }
@@ -192,14 +192,14 @@
         margin: 20px 0;
         overflow: hidden;
       }
-      
+
       .progress-fill {
         background: #3498db;
         height: 100%;
         width: 0%;
         transition: width 0.3s;
       }
-      
+
       .quiz-info {
         background: #f8f9fa;
         border: 1px solid #dee2e6;
@@ -226,7 +226,7 @@
         text-align: center;
         padding: 20px;
       }
-      
+
       .spinner {
         border: 4px solid #f3f3f3;
         border-top: 4px solid #3498db;
@@ -245,7 +245,7 @@
           transform: rotate(360deg);
         }
       }
-      
+
       .submit-section {
         background: #fff8e1;
         border: 1px solid #ffcc02;
@@ -295,9 +295,18 @@
             <h3>Quiz Information</h3>
             <ul>
               <li><strong>Total Questions:</strong> 50 (Multiple Choice)</li>
-              <li><strong>Section 1:</strong> Mathematics (10 questions) - 20 marks</li>
-              <li><strong>Section 2:</strong> Python Programming (15 questions) - 30 marks</li>
-              <li><strong>Section 3:</strong> Python Libraries (25 questions) - 50 marks</li>
+              <li>
+                <strong>Section 1:</strong> Mathematics (10 questions) - 20
+                marks
+              </li>
+              <li>
+                <strong>Section 2:</strong> Python Programming (15 questions) -
+                30 marks
+              </li>
+              <li>
+                <strong>Section 3:</strong> Python Libraries (25 questions) - 50
+                marks
+              </li>
               <li><strong>Total Marks:</strong> 100 (2 marks per question)</li>
             </ul>
           </div>
@@ -306,11 +315,23 @@
           <form id="regForm">
             <div class="form-group">
               <label for="studentName">Student Name:</label>
-              <input type="text" id="studentName" name="name" required placeholder="Enter your full name" />
+              <input
+                type="text"
+                id="studentName"
+                name="name"
+                required
+                placeholder="Enter your full name"
+              />
             </div>
             <div class="form-group">
               <label for="studentPRN">PRN Number:</label>
-              <input type="text" id="studentPRN" name="prn" required placeholder="Enter your PRN number" />
+              <input
+                type="text"
+                id="studentPRN"
+                name="prn"
+                required
+                placeholder="Enter your PRN number"
+              />
             </div>
             <button type="submit" class="btn">Start Quiz</button>
           </form>
@@ -331,7 +352,10 @@
             <div id="questionsContainer"></div>
             <div class="submit-section">
               <h3>Ready to Submit?</h3>
-              <p>Please review your answers before submitting. Once submitted, you cannot change your responses.</p>
+              <p>
+                Please review your answers before submitting. Once submitted,
+                you cannot change your responses.
+              </p>
               <button id="submitQuiz" class="btn">Submit Quiz</button>
             </div>
           </div>
@@ -359,46 +383,49 @@
       }
 
       // Registration form handling
-      document.getElementById("regForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+      document
+        .getElementById("regForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-        const formData = new FormData(e.target);
-        const data = {
-          name: formData.get("name").trim(),
-          prn: formData.get("prn").trim(),
-        };
+          const formData = new FormData(e.target);
+          const data = {
+            name: formData.get("name").trim(),
+            prn: formData.get("prn").trim(),
+          };
 
-        if (!data.name || !data.prn) {
-          alert("Please fill in all fields");
-          return;
-        }
-
-        try {
-          const response = await fetch("/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-
-          const result = await response.json();
-          if (result.success) {
-            currentStudent = data;
-            studentId = result.student_id;
-            document.getElementById("registrationForm").style.display = "none";
-            document.getElementById("quizContainer").style.display = "block";
-            document.getElementById("loading").classList.remove("hidden");
-            await loadQuestions();
-            startQuizTimer();
-          } else {
-            alert("Registration failed: " + result.error);
+          if (!data.name || !data.prn) {
+            alert("Please fill in all fields");
+            return;
           }
-        } catch (error) {
-          alert("Registration failed. Please try again.");
-          console.error("Error:", error);
-        }
-      });
+
+          try {
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+              currentStudent = data;
+              studentId = result.student_id;
+              document.getElementById("registrationForm").style.display =
+                "none";
+              document.getElementById("quizContainer").style.display = "block";
+              document.getElementById("loading").classList.remove("hidden");
+              await loadQuestions();
+              startQuizTimer();
+            } else {
+              alert("Registration failed: " + result.error);
+            }
+          } catch (error) {
+            alert("Registration failed. Please try again.");
+            console.error("Error:", error);
+          }
+        });
 
       // Load questions from server
       async function loadQuestions() {
@@ -418,9 +445,24 @@
         const container = document.getElementById("questionsContainer");
         container.innerHTML = "";
         const sections = [
-          { key: "mathematics", title: "Mathematics", description: "10 questions on probability, distributions, and statistics" },
-          { key: "python", title: "Python Programming", description: "15 questions on Python fundamentals and code analysis" },
-          { key: "python_libraries", title: "Python Libraries", description: "25 questions on NumPy, Pandas, Matplotlib, and Seaborn with code examples" },
+          {
+            key: "mathematics",
+            title: "Mathematics",
+            description:
+              "10 questions on probability, distributions, and statistics",
+          },
+          {
+            key: "python",
+            title: "Python Programming",
+            description:
+              "15 questions on Python fundamentals and code analysis",
+          },
+          {
+            key: "python_libraries",
+            title: "Python Libraries",
+            description:
+              "25 questions on NumPy, Pandas, Matplotlib, and Seaborn with code examples",
+          },
         ];
 
         sections.forEach((section) => {
@@ -441,12 +483,24 @@
               <div class="question-number">Question ${question.id}</div>
               <h4>${question.question}</h4>
               <div class="options">
-                ${question.options.map((option, index) => `
-                  <div class="option" onclick="selectOption(${question.id}, ${index})">
-                    <input type="radio" name="question_${question.id}" value="${index}" id="q${question.id}_opt${index}">
-                    <label for="q${question.id}_opt${index}">${String.fromCharCode(65 + index)}. ${option}</label>
+                ${question.options
+                  .map(
+                    (option, index) => `
+                  <div class="option" onclick="selectOption(${
+                    question.id
+                  }, ${index})">
+                    <input type="radio" name="question_${
+                      question.id
+                    }" value="${index}" id="q${question.id}_opt${index}">
+                    <label for="q${
+                      question.id
+                    }_opt${index}">${String.fromCharCode(
+                      65 + index
+                    )}. ${option}</label>
                   </div>
-                `).join("")}
+                `
+                  )
+                  .join("")}
               </div>
             `;
             container.appendChild(questionDiv);
@@ -461,13 +515,17 @@
         userResponses[questionId] = optionIndex;
 
         // Update UI
-        const questionElement = document.querySelector(`input[name="question_${questionId}"][value="${optionIndex}"]`);
+        const questionElement = document.querySelector(
+          `input[name="question_${questionId}"][value="${optionIndex}"]`
+        );
         questionElement.checked = true;
 
         // Remove previous selection styling
-        document.querySelectorAll(`input[name="question_${questionId}"]`).forEach((input) => {
-          input.closest(".option").classList.remove("selected");
-        });
+        document
+          .querySelectorAll(`input[name="question_${questionId}"]`)
+          .forEach((input) => {
+            input.closest(".option").classList.remove("selected");
+          });
 
         // Add selection styling
         questionElement.closest(".option").classList.add("selected");
@@ -480,70 +538,81 @@
         const totalQuestions = 50;
         const answeredQuestions = Object.keys(userResponses).length;
         const progressPercent = (answeredQuestions / totalQuestions) * 100;
-        document.getElementById("progressFill").style.width = progressPercent + "%";
+        document.getElementById("progressFill").style.width =
+          progressPercent + "%";
       }
 
       // Submit quiz - SIMPLE VERSION WITHOUT ANTI-CHEAT
-      document.getElementById("submitQuiz").addEventListener("click", async () => {
-        console.log("Submit button clicked!");
-        
-        const answeredQuestions = Object.keys(userResponses).length;
-        const totalQuestions = 50;
+      document
+        .getElementById("submitQuiz")
+        .addEventListener("click", async () => {
+          console.log("Submit button clicked!");
 
-        if (answeredQuestions < totalQuestions) {
-          const unanswered = totalQuestions - answeredQuestions;
-          if (!confirm(`You have ${unanswered} unanswered questions. Do you want to submit anyway?`)) {
+          const answeredQuestions = Object.keys(userResponses).length;
+          const totalQuestions = 50;
+
+          if (answeredQuestions < totalQuestions) {
+            const unanswered = totalQuestions - answeredQuestions;
+            if (
+              !confirm(
+                `You have ${unanswered} unanswered questions. Do you want to submit anyway?`
+              )
+            ) {
+              return;
+            }
+          }
+
+          if (
+            !confirm(
+              "Are you sure you want to submit your quiz? You cannot change your answers after submission."
+            )
+          ) {
             return;
           }
-        }
 
-        if (!confirm("Are you sure you want to submit your quiz? You cannot change your answers after submission.")) {
-          return;
-        }
+          try {
+            isQuizSubmitted = true;
+            document.getElementById("submitQuiz").disabled = true;
+            document.getElementById("submitQuiz").textContent = "Submitting...";
 
-        try {
-          isQuizSubmitted = true;
-          document.getElementById("submitQuiz").disabled = true;
-          document.getElementById("submitQuiz").textContent = "Submitting...";
+            console.log("--- SUBMISSION DEBUG ---");
+            console.log("Student ID:", studentId);
+            console.log("User Responses:", userResponses);
+            console.log("Time Elapsed:", getTimeElapsed());
 
-          console.log("--- SUBMISSION DEBUG ---");
-          console.log("Student ID:", studentId);
-          console.log("User Responses:", userResponses);
-          console.log("Time Elapsed:", getTimeElapsed());
+            const response = await fetch("/submit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                responses: userResponses,
+                student_id: studentId,
+                auto_submit: false,
+                time_taken: getTimeElapsed(),
+              }),
+            });
 
-          const response = await fetch("/submit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              responses: userResponses,
-              student_id: studentId,
-              auto_submit: false,
-              time_taken: getTimeElapsed(),
-            }),
-          });
+            console.log("Response status:", response.status);
 
-          console.log("Response status:", response.status);
+            const result = await response.json();
+            console.log("Server response:", result);
 
-          const result = await response.json();
-          console.log("Server response:", result);
-
-          if (result.success) {
-            sessionStorage.setItem("quizResults", JSON.stringify(result));
-            window.location.href = "/results";
-          } else {
-            alert("Submission failed: " + result.error);
+            if (result.success) {
+              sessionStorage.setItem("quizResults", JSON.stringify(result));
+              window.location.href = "/results";
+            } else {
+              alert("Submission failed: " + result.error);
+              document.getElementById("submitQuiz").disabled = false;
+              document.getElementById("submitQuiz").textContent = "Submit Quiz";
+            }
+          } catch (error) {
+            console.error("Submission error:", error);
+            alert("Submission failed. Please try again.");
             document.getElementById("submitQuiz").disabled = false;
             document.getElementById("submitQuiz").textContent = "Submit Quiz";
           }
-        } catch (error) {
-          console.error("Submission error:", error);
-          alert("Submission failed. Please try again.");
-          document.getElementById("submitQuiz").disabled = false;
-          document.getElementById("submitQuiz").textContent = "Submit Quiz";
-        }
-      });
+        });
     </script>
   </body>
 </html>
