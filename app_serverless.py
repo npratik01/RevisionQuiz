@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 import os
 import uuid
+import time
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
@@ -10,6 +11,24 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-pr
 # In-memory storage for serverless compatibility
 students_data = {}
 quiz_responses = {}
+
+# Anti-cheating measures: Track submission times
+submission_times = {}
+
+# Security headers middleware
+@app.after_request
+def after_request(response):
+    # Security headers to prevent various attacks
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'"
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 # Quiz questions data (keeping the same structure)
 QUIZ_QUESTIONS = {
@@ -337,16 +356,18 @@ def register_student():
         
         # Generate unique student ID
         student_id = str(uuid.uuid4())
-        
-        # Store student data in memory
+          # Store student data in memory
         students_data[student_id] = {
             'id': student_id,
             'name': name,
             'prn': prn,
             'total_score': 0,
-            'submission_time': datetime.now().isoformat(),
+            'registration_time': datetime.now().isoformat(),
             'responses': {}
         }
+        
+        # Track timing for anti-cheating
+        submission_times[student_id] = time.time()
         
         return jsonify({
             'success': True, 
@@ -374,6 +395,23 @@ def submit_quiz():
             return jsonify({'error': 'Invalid student session'}), 400
         
         student = students_data[student_id]
+        
+        # Anti-cheating: Check if already submitted
+        if 'submission_time' in student:
+            return jsonify({'error': 'Quiz already submitted'}), 400
+        
+        # Anti-cheating: Validate submission timing (minimum time check)
+        current_time = time.time()
+        if student_id in submission_times:
+            time_diff = current_time - submission_times[student_id]
+            if time_diff < 300:  # Minimum 5 minutes to complete quiz
+                return jsonify({'error': 'Suspicious submission timing detected'}), 400
+        
+        # Anti-cheating: Validate response format
+        for question_id, response in responses.items():
+            if not isinstance(response, int) or response < 0 or response > 3:
+                return jsonify({'error': 'Invalid response format detected'}), 400
+        
         total_score = 0
         
         # Process each section

@@ -3,13 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Club Revision Quiz</title>
-    <style>
+    <title>AI Club Revision Quiz</title>    <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        /* Anti-copy security measures */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
       }
+      
+      /* Prevent text selection on all elements */
+      body, html, div, p, h1, h2, h3, h4, span, label {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        -webkit-touch-callout: none !important;
+      }
+      
+      /* Allow selection only on input fields */
+      input[type="text"], input[type="radio"] {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+      }
+      
+      /* Hide content when developer tools might be open */
+      @media (max-device-width: 800px) and (orientation: landscape) {
+        .quiz-container {
+          filter: blur(5px);
+        }
+      }
+      
+      /* Anti-screenshot watermark */
+      body::before {
+        content: "AI Club Quiz - Confidential";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 4em;
+        color: rgba(0, 0, 0, 0.03);
+        z-index: -1;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: #f5f7fa;
@@ -127,14 +172,56 @@
         border-radius: 6px;
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-      .question h4 {
+      }      .question h4 {
         color: #333;
         margin-bottom: 15px;
         font-size: 16px;
         line-height: 1.5;
         white-space: pre-wrap;
         font-family: "Courier New", monospace;
+        /* Additional anti-copy styling */
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        position: relative;
+      }
+      
+      /* Make code blocks harder to copy */
+      .question h4::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -5px;
+        right: -5px;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 8px,
+          rgba(0,0,0,0.01) 8px,
+          rgba(0,0,0,0.01) 16px
+        );
+        pointer-events: none;
+      }
+      
+      /* Security overlay for suspicious behavior */
+      .security-blur {
+        filter: blur(10px) !important;
+        transition: filter 0.3s ease;
+      }
+      
+      .security-warning {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        text-align: center;
       }
       .question-number {
         background: #3498db;
@@ -585,8 +672,249 @@
             console.error("Error:", error);
             document.getElementById("submitQuiz").disabled = false;
             document.getElementById("submitQuiz").textContent = "Submit Quiz";
+          }        });
+
+      // ============================================
+      // ANTI-CHEATING SECURITY MEASURES
+      // ============================================
+      
+      // Disable right-click context menu
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showSecurityWarning("Right-click is disabled during the quiz.");
+        return false;
+      });
+      
+      // Disable text selection attempts
+      document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+      // Disable drag and drop
+      document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+      // Block copy/paste and other keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Block Ctrl+C, Ctrl+V, Ctrl+A, Ctrl+S, Ctrl+P, Ctrl+U, F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (
+          (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 65 || e.keyCode === 83 || e.keyCode === 80 || e.keyCode === 85)) ||
+          e.keyCode === 123 || // F12
+          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I/J/C
+          (e.ctrlKey && e.shiftKey && e.keyCode === 75) // Ctrl+Shift+K (Firefox)
+        ) {
+          e.preventDefault();
+          showSecurityWarning("Keyboard shortcuts are disabled during the quiz.");
+          return false;
+        }
+      });
+      
+      // Detect if developer tools are open
+      let devtools = {
+        open: false,
+        orientation: null
+      };
+      
+      setInterval(function() {
+        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+          if (!devtools.open) {
+            devtools.open = true;
+            showSecurityWarning("Developer tools detected! Please close them to continue the quiz.");
+            document.body.style.filter = "blur(10px)";
+          }
+        } else {
+          if (devtools.open) {
+            devtools.open = false;
+            document.body.style.filter = "none";
+          }
+        }
+      }, 500);
+      
+      // Detect console access attempts
+      let consoleWarned = false;
+      Object.defineProperty(window, 'console', {
+        get: function() {
+          if (!consoleWarned) {
+            consoleWarned = true;
+            showSecurityWarning("Console access is not allowed during the quiz.");
+          }
+          return {};
+        }
+      });
+      
+      // Block inspect element attempts
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode === 123) { // F12
+          e.preventDefault();
+          showSecurityWarning("Inspect element is disabled during the quiz.");
+          return false;
+        }
+      });
+      
+      // Prevent text selection with mouse
+      document.onselectstart = function() {
+        return false;
+      };
+      
+      document.onmousedown = function() {
+        return false;
+      };
+      
+      // Blur content when window loses focus (Alt+Tab protection)
+      let isBlurred = false;
+      window.addEventListener('blur', function() {
+        if (!isBlurred) {
+          isBlurred = true;
+          document.body.style.filter = "blur(5px)";
+          showSecurityWarning("Please stay focused on the quiz window.");
+        }
+      });
+      
+      window.addEventListener('focus', function() {
+        if (isBlurred) {
+          isBlurred = false;
+          document.body.style.filter = "none";
+        }
+      });
+      
+      // Disable printing
+      window.addEventListener('beforeprint', function(e) {
+        e.preventDefault();
+        showSecurityWarning("Printing is not allowed during the quiz.");
+        return false;
+      });
+      
+      // Monitor for suspicious activities
+      let suspiciousActivities = 0;
+      
+      function showSecurityWarning(message) {
+        suspiciousActivities++;
+        
+        // Create warning overlay
+        const warningDiv = document.createElement('div');
+        warningDiv.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #e74c3c;
+          color: white;
+          padding: 15px 20px;
+          border-radius: 5px;
+          z-index: 10000;
+          font-weight: bold;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+          max-width: 300px;
+        `;
+        warningDiv.textContent = message;
+        document.body.appendChild(warningDiv);
+        
+        // Remove warning after 3 seconds
+        setTimeout(() => {
+          if (warningDiv.parentNode) {
+            warningDiv.parentNode.removeChild(warningDiv);
+          }
+        }, 3000);
+        
+        // If too many suspicious activities, show final warning
+        if (suspiciousActivities >= 3) {
+          const finalWarning = confirm(
+            "Multiple security violations detected. Your quiz session may be terminated. Do you want to continue with the quiz?"
+          );
+          if (!finalWarning) {
+            window.location.href = "/";
+          }
+        }
+      }
+      
+      // Obfuscate question text to prevent easy copying
+      function obfuscateText(text) {
+        // Add invisible unicode characters to break text copying
+        return text.split('').map((char, index) => {
+          if (index % 3 === 0 && char !== ' ') {
+            return char + '\u200B'; // Zero-width space
+          }
+          return char;
+        }).join('');
+      }
+      
+      // Apply obfuscation to question text after rendering
+      function applyTextObfuscation() {
+        const questionElements = document.querySelectorAll('.question h4');
+        questionElements.forEach(element => {
+          if (!element.dataset.obfuscated) {
+            element.innerHTML = obfuscateText(element.innerHTML);
+            element.dataset.obfuscated = 'true';
           }
         });
+      }
+      
+      // Override the renderQuestions function to include obfuscation
+      const originalRenderQuestions = renderQuestions;
+      renderQuestions = function() {
+        originalRenderQuestions();
+        setTimeout(applyTextObfuscation, 100);
+      };
+      
+      // Disable zoom
+      document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && (e.keyCode === 61 || e.keyCode === 107 || e.keyCode === 173 || e.keyCode === 109 || e.keyCode === 187 || e.keyCode === 189)) {
+          e.preventDefault();
+          showSecurityWarning("Zoom is disabled during the quiz.");
+        }
+      });
+      
+      // Prevent mobile text selection
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      });
+      
+      // Block common developer shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Block Ctrl+Shift+K (Console in Firefox)
+        // Block Ctrl+Shift+E (Network tab)
+        // Block Ctrl+Shift+M (Responsive design mode)
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 75 || e.keyCode === 69 || e.keyCode === 77)) {
+          e.preventDefault();
+          showSecurityWarning("Developer shortcuts are disabled.");
+          return false;
+        }
+      });
+      
+      // Initialize security when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add a subtle warning message
+        const securityNotice = document.createElement('div');
+        securityNotice.style.cssText = `
+          position: fixed;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 8px 15px;
+          border-radius: 15px;
+          font-size: 12px;
+          z-index: 1000;
+        `;
+        securityNotice.textContent = "🔒 Secure Quiz Mode - Anti-copy protection active";
+        document.body.appendChild(securityNotice);
+        
+        // Remove notice after 5 seconds
+        setTimeout(() => {
+          if (securityNotice.parentNode) {
+            securityNotice.parentNode.removeChild(securityNotice);
+          }
+        }, 5000);
+      });
+      
+      // ============================================
+      // END ANTI-CHEATING MEASURES
+      // ============================================
     </script>
   </body>
 </html>
