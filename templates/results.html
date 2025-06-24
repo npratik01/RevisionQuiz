@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Results - AI Club</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #333;
+      }
+      .container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 90%;
+        max-width: 600px;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .header {
+        background: #2c3e50;
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .content {
+        padding: 40px;
+        text-align: center;
+      }
+
+      .result-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px 0;
+        border-left: 5px solid #28a745;
+      }
+
+      .score-display {
+        font-size: 3em;
+        font-weight: bold;
+        color: #28a745;
+        margin: 20px 0;
+      }
+
+      .percentage {
+        font-size: 1.5em;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .student-info {
+        background: #e9ecef;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .student-info h3 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+      }
+
+      .performance-indicator {
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-weight: bold;
+      }
+
+      .excellent {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .good {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+
+      .average {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+
+      .needs-improvement {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .btn {
+        background: #3498db;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+        margin: 10px;
+      }
+
+      .btn:hover {
+        background: #2980b9;
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+      }
+
+      .btn-secondary:hover {
+        background: #5a6268;
+      }
+
+      .trophy {
+        font-size: 4em;
+        margin: 20px 0;
+      }
+
+      .grade-breakdown {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: left;
+      }
+
+      .grade-breakdown h4 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .section-score {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        margin: 5px 0;
+        background: white;
+        border-radius: 5px;
+        border-left: 4px solid #667eea;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          margin: 10px;
+          width: 95%;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .score-display {
+          font-size: 2.5em;
+        }
+
+        .info-row {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Quiz Completed!</h1>
+        <p>Your results are ready</p>
+      </div>
+
+      <div class="content">
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Loading your results...</p>
+        </div>
+        <div id="resultsContent" style="display: none">
+          <div class="result-card">
+            <h2>Your Score</h2>
+            <div class="score-display" id="scoreDisplay">0/100</div>
+            <div class="percentage" id="percentageDisplay">0%</div>
+          </div>
+
+          <div class="performance-indicator" id="performanceIndicator">
+            <span id="performanceText">Calculating performance...</span>
+          </div>
+          <div class="student-info">
+            <h3>Student Information</h3>
+            <div class="info-row">
+              <span><strong>Name:</strong></span>
+              <span id="studentName">-</span>
+            </div>
+            <div class="info-row">
+              <span><strong>PRN:</strong></span>
+              <span id="studentPRN">-</span>
+            </div>
+            <div class="info-row">
+              <span><strong>Date:</strong></span>
+              <span id="submissionDate">-</span>
+            </div>
+          </div>
+          <div class="grade-breakdown">
+            <h4>Section-wise Breakdown</h4>
+            <div class="section-score">
+              <span><strong>Mathematics (10 questions)</strong></span>
+              <span id="mathScore">0/20 marks</span>
+            </div>
+            <div class="section-score">
+              <span><strong>Python Programming (15 questions)</strong></span>
+              <span id="pythonScore">0/30 marks</span>
+            </div>
+            <div class="section-score">
+              <span><strong>Python Libraries (25 questions)</strong></span>
+              <span id="librariesScore">0/50 marks</span>
+            </div>
+          </div>
+          <div style="margin-top: 30px">
+            <a href="/" class="btn">Take Quiz Again</a>
+            <button onclick="window.print()" class="btn btn-secondary">
+              Print Results
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get results from sessionStorage
+        const resultsData = sessionStorage.getItem("quizResults");
+
+        if (!resultsData) {
+          // Redirect to home if no results found
+          window.location.href = "/";
+          return;
+        }
+
+        setTimeout(() => {
+          displayResults(JSON.parse(resultsData));
+        }, 1500); // Show loading for 1.5 seconds for better UX
+      });
+
+      function displayResults(results) {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("resultsContent").style.display = "block";
+
+        // Display basic information
+        document.getElementById(
+          "scoreDisplay"
+        ).textContent = `${results.total_score}/100`;
+        document.getElementById(
+          "percentageDisplay"
+        ).textContent = `${results.percentage.toFixed(1)}%`;
+        document.getElementById("studentName").textContent =
+          results.student_name;
+        document.getElementById("studentPRN").textContent = results.prn;
+        document.getElementById("submissionDate").textContent =
+          new Date().toLocaleDateString();
+
+        // Calculate section-wise scores (this would need to be enhanced with actual section data from backend)
+        // For now, we'll distribute the score proportionally
+        const mathPercentage = results.percentage;
+        const pythonPercentage = results.percentage;
+        const librariesPercentage = results.percentage;
+
+        const mathScore = Math.round((mathPercentage / 100) * 20);
+        const pythonScore = Math.round((pythonPercentage / 100) * 30);
+        const librariesScore = Math.round((librariesPercentage / 100) * 50);
+
+        document.getElementById(
+          "mathScore"
+        ).textContent = `${mathScore}/20 marks`;
+        document.getElementById(
+          "pythonScore"
+        ).textContent = `${pythonScore}/30 marks`;
+        document.getElementById(
+          "librariesScore"
+        ).textContent = `${librariesScore}/50 marks`;
+
+        // Set performance indicator and trophy
+        setPerformanceIndicator(results.percentage);
+      }
+
+      function setPerformanceIndicator(percentage) {
+        const indicator = document.getElementById("performanceIndicator");
+        const performanceText = document.getElementById("performanceText");
+        const trophyIcon = document.getElementById("trophyIcon");
+        if (percentage >= 90) {
+          indicator.className = "performance-indicator excellent";
+          performanceText.textContent = "Excellent! Outstanding performance!";
+          trophyIcon.textContent = "";
+        } else if (percentage >= 75) {
+          indicator.className = "performance-indicator good";
+          performanceText.textContent = "Good job! Well done!";
+          trophyIcon.textContent = "";
+        } else if (percentage >= 60) {
+          indicator.className = "performance-indicator average";
+          performanceText.textContent = "Average performance. Keep studying!";
+          trophyIcon.textContent = "";
+        } else {
+          indicator.className = "performance-indicator needs-improvement";
+          performanceText.textContent = "Needs improvement. Don't give up!";
+          trophyIcon.textContent = "";
+        }
+      }
+
+      // Clear session storage when leaving the page
+      window.addEventListener("beforeunload", function () {
+        sessionStorage.removeItem("quizResults");
+      });
+    </script>
+  </body>
+</html>
