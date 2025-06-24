@@ -67,6 +67,14 @@ Cache-Control: no-cache, no-store, must-revalidate
 - **Response encryption**: Secure JSON communication
 - **Input sanitization**: All inputs validated and sanitized
 
+#### **Time-Based Security**
+- **30-minute time limit**: Enforced at both frontend and backend
+- **Auto-submission**: Prevents unlimited time exploitation
+- **Time tracking**: Accurate measurement of quiz duration
+- **Grace period**: 5-second warning before auto-submission
+- **Time validation**: Backend validates submission timing
+- **Visual indicators**: Progressive color-coded timer warnings
+
 ## 🎯 **Anti-Cheating Strategies**
 
 ### **Question Design**

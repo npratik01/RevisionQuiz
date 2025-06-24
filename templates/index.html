@@ -272,9 +272,7 @@
         font-family: "Courier New", monospace;
         white-space: pre;
         overflow-x: auto;
-      }
-
-      .progress-bar {
+      }      .progress-bar {
         background: #e1e5e9;
         height: 8px;
         border-radius: 4px;
@@ -286,6 +284,85 @@
         height: 100%;
         width: 0%;
         transition: width 0.3s;
+      }
+      
+      /* Timer styles */
+      .timer-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #2c3e50;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        z-index: 1000;
+        font-weight: bold;
+        font-size: 18px;
+        min-width: 200px;
+        text-align: center;
+      }
+      
+      .timer-container.warning {
+        background: #e74c3c;
+        animation: pulse 2s infinite;
+      }
+      
+      .timer-container.critical {
+        background: #c0392b;
+        animation: pulse 1s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+      }
+      
+      .timer-label {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+      
+      .timer-display {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      
+      /* Auto-submit warning overlay */
+      .auto-submit-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        font-size: 24px;
+      }
+      
+      .auto-submit-content {
+        background: #e74c3c;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      }
+      
+      .auto-submit-content h2 {
+        margin-bottom: 20px;
+        font-size: 32px;
+      }
+      
+      .countdown-display {
+        font-size: 48px;
+        font-weight: bold;
+        margin: 20px 0;
       }
       .quiz-info {
         background: #f8f9fa;
@@ -391,9 +468,8 @@
               <li>
                 <strong>Section 3:</strong> Python Libraries (25 questions) - 50
                 marks
-              </li>
-              <li><strong>Total Marks:</strong> 100 (2 marks per question)</li>
-              <li><strong>Time:</strong> No time limit</li>
+              </li>              <li><strong>Total Marks:</strong> 100 (2 marks per question)</li>
+              <li><strong>Time Limit:</strong> 30 minutes (Auto-submit when time expires)</li>
             </ul>
           </div>
 
@@ -443,15 +519,147 @@
                 you cannot change your responses.
               </p>
               <button id="submitQuiz" class="btn">Submit Quiz</button>
-            </div>
-          </div>
+            </div>          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Timer Display -->
+    <div id="timerContainer" class="timer-container" style="display: none;">
+      <div class="timer-label">Time Remaining</div>
+      <div class="timer-display" id="timerDisplay">30:00</div>
+    </div>
+
+    <!-- Auto-submit Overlay -->
+    <div id="autoSubmitOverlay" class="auto-submit-overlay">
+      <div class="auto-submit-content">
+        <h2>⏰ Time's Up!</h2>
+        <p>Your quiz is being automatically submitted...</p>
+        <div class="countdown-display" id="autoSubmitCountdown">5</div>
+        <p>Submitting in <span id="submitCountdown">5</span> seconds</p>
       </div>
     </div>    <script>
       let questions = {};
       let userResponses = {};
       let currentStudent = null;
       let studentId = null;
+
+      // Timer variables
+      let quizTimer = null;
+      let timeRemaining = 30 * 60; // 30 minutes in seconds
+      let quizStartTime = null;
+      let isQuizSubmitted = false;
+
+      // Timer functions
+      function startQuizTimer() {
+        quizStartTime = Date.now();
+        document.getElementById('timerContainer').style.display = 'block';
+        
+        quizTimer = setInterval(function() {
+          if (isQuizSubmitted) {
+            clearInterval(quizTimer);
+            return;
+          }
+          
+          timeRemaining--;
+          updateTimerDisplay();
+          
+          // Check for warnings
+          if (timeRemaining <= 300 && timeRemaining > 60) { // Last 5 minutes
+            document.getElementById('timerContainer').className = 'timer-container warning';
+          } else if (timeRemaining <= 60) { // Last minute
+            document.getElementById('timerContainer').className = 'timer-container critical';
+          }
+          
+          // Auto-submit when time runs out
+          if (timeRemaining <= 0) {
+            clearInterval(quizTimer);
+            autoSubmitQuiz();
+          }
+        }, 1000);
+      }
+      
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('timerDisplay').textContent = display;
+      }
+      
+      function autoSubmitQuiz() {
+        if (isQuizSubmitted) return;
+        
+        // Show auto-submit overlay
+        document.getElementById('autoSubmitOverlay').style.display = 'flex';
+        
+        let countdown = 5;
+        document.getElementById('autoSubmitCountdown').textContent = countdown;
+        document.getElementById('submitCountdown').textContent = countdown;
+        
+        const countdownTimer = setInterval(function() {
+          countdown--;
+          if (countdown > 0) {
+            document.getElementById('autoSubmitCountdown').textContent = countdown;
+            document.getElementById('submitCountdown').textContent = countdown;
+          } else {
+            clearInterval(countdownTimer);
+            submitQuizAutomatically();
+          }
+        }, 1000);
+      }
+      
+      async function submitQuizAutomatically() {
+        if (isQuizSubmitted) return;
+        
+        isQuizSubmitted = true;
+        
+        try {
+          const response = await fetch("/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+              responses: userResponses,
+              student_id: studentId,
+              auto_submit: true,
+              time_taken: Math.floor((Date.now() - quizStartTime) / 1000)
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            sessionStorage.setItem("quizResults", JSON.stringify(result));
+            window.location.href = "/results";
+          } else {
+            alert("Auto-submission failed: " + result.error);
+            // Retry submission
+            setTimeout(() => {
+              if (!isQuizSubmitted) {
+                submitQuizAutomatically();
+              }
+            }, 2000);
+          }
+        } catch (error) {
+          console.error("Auto-submission error:", error);
+          // Retry submission
+          setTimeout(() => {
+            if (!isQuizSubmitted) {
+              submitQuizAutomatically();
+            }
+          }, 2000);
+        }
+      }
+      
+      // Stop timer when quiz is manually submitted
+      function stopTimer() {
+        if (quizTimer) {
+          clearInterval(quizTimer);
+          quizTimer = null;
+        }
+        document.getElementById('timerContainer').style.display = 'none';
+      }
 
       // Registration form handling
       document
@@ -479,9 +687,7 @@
               body: JSON.stringify(data),
             });
 
-            const result = await response.json();
-
-            if (result.success) {
+            const result = await response.json();            if (result.success) {
               currentStudent = data;
               studentId = result.student_id; // Store the UUID from serverless backend
               document.getElementById("registrationForm").style.display =
@@ -489,6 +695,8 @@
               document.getElementById("quizContainer").style.display = "block";
               document.getElementById("loading").classList.remove("hidden");
               await loadQuestions();
+              // Start the 30-minute timer
+              startQuizTimer();
             } else {
               alert("Registration failed: " + result.error);
             }
@@ -642,6 +850,10 @@
           ) {
             return;
           }          try {
+            // Stop the timer when manually submitting
+            stopTimer();
+            isQuizSubmitted = true;
+            
             document.getElementById("submitQuiz").disabled = true;
             document.getElementById("submitQuiz").textContent = "Submitting...";
 
@@ -652,7 +864,9 @@
               },
               body: JSON.stringify({ 
                 responses: userResponses,
-                student_id: studentId // Include student ID for serverless backend
+                student_id: studentId,
+                auto_submit: false,
+                time_taken: Math.floor((Date.now() - quizStartTime) / 1000)
               }),
             });
 

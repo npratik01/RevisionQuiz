@@ -390,6 +390,8 @@ def submit_quiz():
         data = request.get_json()
         student_id = data.get('student_id')
         responses = data.get('responses', {})
+        auto_submit = data.get('auto_submit', False)
+        time_taken = data.get('time_taken', 0)
         
         if not student_id or student_id not in students_data:
             return jsonify({'error': 'Invalid student session'}), 400
@@ -397,15 +399,19 @@ def submit_quiz():
         student = students_data[student_id]
         
         # Anti-cheating: Check if already submitted
-        if 'submission_time' in student:
+        if 'final_submission_time' in student:
             return jsonify({'error': 'Quiz already submitted'}), 400
         
-        # Anti-cheating: Validate submission timing (minimum time check)
+        # Anti-cheating: Validate submission timing (minimum time check for manual submissions)
         current_time = time.time()
-        if student_id in submission_times:
+        if student_id in submission_times and not auto_submit:
             time_diff = current_time - submission_times[student_id]
             if time_diff < 300:  # Minimum 5 minutes to complete quiz
                 return jsonify({'error': 'Suspicious submission timing detected'}), 400
+        
+        # Anti-cheating: Validate time limit (30 minutes = 1800 seconds)
+        if time_taken > 1800:
+            return jsonify({'error': 'Time limit exceeded'}), 400
         
         # Anti-cheating: Validate response format
         for question_id, response in responses.items():
@@ -434,16 +440,23 @@ def submit_quiz():
                         'section': section
                     }
         
-        # Update student's total score
+        # Update student's final submission data
         student['total_score'] = total_score
-        student['submission_time'] = datetime.now().isoformat()
+        student['final_submission_time'] = datetime.now().isoformat()
+        student['time_taken_seconds'] = time_taken
+        student['auto_submitted'] = auto_submit
+        
+        # Calculate time taken in minutes for display
+        time_minutes = round(time_taken / 60, 1)
         
         return jsonify({
             'success': True,
             'total_score': total_score,
             'percentage': (total_score / 100) * 100,
             'student_name': student['name'],
-            'prn': student['prn']
+            'prn': student['prn'],
+            'time_taken_minutes': time_minutes,
+            'auto_submitted': auto_submit
         })
         
     except Exception as e:

@@ -9,12 +9,22 @@ A comprehensive web-based quiz system for testing knowledge in Mathematics, Pyth
 ## ✨ Features
 
 - 🎯 **50 Professional Questions** across 3 sections
+- ⏰ **30-Minute Time Limit** with auto-submission
 - 💻 **Code Analysis Questions** for Python sections
 - 📱 **Mobile-Responsive Design**
 - ⚡ **Instant Results & Analytics**
 - 🗄️ **Automatic Data Storage**
 - 🎨 **Professional Interface**
 - 🔒 **Advanced Anti-Cheating System**
+
+### ⏰ Timer & Time Management
+
+- **⏱️ Real-time Timer**: Visible countdown showing remaining time
+- **🚨 Smart Warnings**: Color-coded alerts at 5 minutes and 1 minute remaining
+- **🔄 Auto-Submission**: Automatic quiz submission when time expires
+- **📊 Time Tracking**: Accurate time measurement for each student
+- **⚡ Grace Period**: 5-second countdown before auto-submission
+- **📝 Time Analytics**: Time taken displayed in results
 
 ### 🛡️ Security & Anti-Cheating Features
 
