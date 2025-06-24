@@ -14,6 +14,21 @@ A comprehensive web-based quiz system for testing knowledge in Mathematics, Pyth
 - ⚡ **Instant Results & Analytics**
 - 🗄️ **Automatic Data Storage**
 - 🎨 **Professional Interface**
+- 🔒 **Advanced Anti-Cheating System**
+
+### 🛡️ Security & Anti-Cheating Features
+
+- **🚫 Copy Prevention**: Text selection and right-click disabled
+- **⌨️ Keyboard Protection**: Copy/paste shortcuts blocked
+- **🔍 Developer Tools Detection**: Automatic detection and content blurring
+- **👁️ Focus Monitoring**: Detects window switching and tab changes
+- **📱 Mobile Security**: Touch selection and pinch-zoom disabled
+- **⏱️ Timing Analysis**: Suspicious completion time detection
+- **🎯 Question Obfuscation**: Text rendering techniques to prevent copying
+- **⚠️ Progressive Warnings**: Escalating security violation alerts
+- **📊 Behavior Tracking**: Real-time monitoring of suspicious activities
+
+> 📖 **Detailed Security Documentation**: See [SECURITY.md](SECURITY.md) for complete anti-cheating features.
 
 ### 📚 Topics Covered
 
